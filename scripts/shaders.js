@@ -1,4 +1,3 @@
-// Basic shader for gradient effects
 export const vertexShader = `
     varying vec2 vUv;
     void main() {
@@ -17,14 +16,13 @@ export const fragmentShader = `
     }
 `;
 
-// Advanced steam particle shader
 export const steamVertexShader = `
     uniform float time;
     varying vec2 vUv;
     
     void main() {
         vUv = uv;
-        // Add some vertex displacement for steam movement
+        
         vec3 newPosition = position;
         newPosition.y += sin(time * 2.0 + position.x * 10.0) * 0.02;
         newPosition.x += cos(time * 2.0 + position.y * 10.0) * 0.02;
@@ -41,18 +39,17 @@ export const steamFragmentShader = `
     varying vec2 vUv;
     
     void main() {
-        // Create a soft-edged circular particle
+        
         float dist = length(vUv - vec2(0.5));
         float alpha = smoothstep(0.5, 0.2, dist);
         
-        // Add time-based fading
+        
         alpha *= opacity * (1.0 - abs(sin(time * 0.5)));
         
         gl_FragColor = vec4(color, alpha);
     }
 `;
 
-// Reflective surface shader for appliances
 export const reflectiveVertexShader = `
     varying vec3 vNormal;
     varying vec3 vViewPosition;
@@ -77,11 +74,11 @@ export const reflectiveFragmentShader = `
         vec3 normal = normalize(vNormal);
         vec3 viewDir = normalize(vViewPosition);
         
-        // Simple specular reflection
+        
         float specular = pow(max(0.0, dot(reflect(-viewDir, normal), viewDir)), 30.0 / roughness);
         specular = mix(0.0, specular, metalness);
         
-        // Final color combining base color and reflection
+        
         vec3 finalColor = baseColor + vec3(specular);
         
         gl_FragColor = vec4(finalColor, 1.0);
